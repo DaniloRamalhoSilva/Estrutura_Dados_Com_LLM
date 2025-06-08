@@ -1,0 +1,9 @@
+selenium>=4.0.0
+openai==1.77.0
+pandas
+python-dotenv
+
+# py -3.11 -m venv venv
+# .\venv\Scripts\activate
+# python.exe -m pip install --upgrade pip
+# pip install -r requirements.txt
