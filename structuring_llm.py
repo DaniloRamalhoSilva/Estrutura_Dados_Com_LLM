@@ -14,8 +14,8 @@ SYSTEM_PROMPT = """
 Você recebe o HTML bruto de uma página de anúncio de cartucho HP. Retorne um JSON com os campos:
 - titulo: ()
 - marca: (ex: HP)
-- modelo: (ex: 65)
-- preco: número (ex: 120.00)
+- modelo: (ex: 667)  media de preço do modelo 667 é 150,50
+- preco: número (ex: 120,00)
 - cor: (ex: preto, colorido)
 - qualidade_descricao: breve avaliação da clareza/ortografia do texto (ex: \"boa\", \"média\", \"ruim\")
 - qualidade_comentarios: breve avaliação de sentimento dos clientes baseado nos comentarios. (ex: \"Satisfeitos\", \"Indiferentes\", \"Insatisfeitos\")
@@ -24,7 +24,7 @@ Você recebe o HTML bruto de uma página de anúncio de cartucho HP. Retorne um 
 - vendedor: nome da loja ou responsavel pela venda
 - quantidade_reviews: inteiro
 - quantidade_fotos: inteiro
-- classificacao_confianca: procure elementos que possam identificar se o produto é "Original", "Pirata" ou "Suspeito"
+- classificacao_confianca: procure elementos que possam identificar se o produto é (ex: \"Original\", \"Pirata\", \"Suspeito\")
 Responda **somente** com um JSON válido.
 """
 
