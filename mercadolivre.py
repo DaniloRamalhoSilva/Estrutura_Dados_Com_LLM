@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.common import NoSuchElementException, ElementNotInteractableException
+from urllib.parse import urlparse
 
 from database import save_url
 import time
@@ -50,7 +51,14 @@ def scrap_list(produto, url, driver):
     except Exception as e:
         raise e
 
+def _validate_mercadolivre_url(url: str):
+    parsed = urlparse(url)
+    return "mercadolivre.com" in parsed.netloc
+
+
 def scrap_product(url: str, driver):
+    if not _validate_mercadolivre_url(url):
+        raise ValueError("URL deve ser do Mercado Livre")
     try:
         driver.get(url)
         time.sleep(3)  # aqui você pode trocar por WebDriverWait se preferir
@@ -102,6 +110,8 @@ def scrap_product(url: str, driver):
         raise
 
 def scrap_comments(id, url, limit, driver):
+    if not _validate_mercadolivre_url(url):
+        raise ValueError("URL deve ser do Mercado Livre")
     try:
         driver.get(url)
         time.sleep(3)
@@ -142,4 +152,61 @@ def scrap_comments(id, url, limit, driver):
 
     except Exception as e:
         print("Erro em scrap_comments:", e)
+
+def scrap_comments_html(url: str, limit: int, driver) -> str:
+    """Coleta um número limitado de comentários e retorna o HTML.
+
+    Parameters
+    ----------
+    url: str
+        URL do anúncio no Mercado Livre.
+    limit: int
+        Quantidade máxima de comentários a coletar.
+    driver: selenium.webdriver
+        Instância do driver já inicializada.
+
+    Returns
+    -------
+    str
+        HTML contendo os comentários coletados.
+    """
+
+    if not _validate_mercadolivre_url(url):
+        raise ValueError("URL deve ser do Mercado Livre")
+
+    try:
+        driver.get(url)
+        time.sleep(3)
+        driver.implicitly_wait(10)
+
+        try:
+            btn = driver.find_element(By.CSS_SELECTOR, "button.show-more-click")
+            btn.click()
+            time.sleep(2)
+        except NoSuchElementException:
+            pass
+
+        try:
+            iframe = driver.find_element(By.CSS_SELECTOR, "#ui-pdp-iframe-reviews")
+            driver.switch_to.frame(iframe)
+            time.sleep(1)
+        except NoSuchElementException:
+            pass
+
+        comments_html = ""
+        comments = driver.find_elements(By.CSS_SELECTOR, 'article.ui-review-capability-comments__comment')
+        for c in comments[:limit]:
+            try:
+                content_p = c.find_element(By.CSS_SELECTOR,'p.ui-review-capability-comments__comment__content')
+                comments_html += content_p.get_attribute("outerHTML")
+            except NoSuchElementException:
+                continue
+
+        driver.switch_to.default_content()
+
+        return f"<div class='scrap-container'>{comments_html}</div>"
+
+    except Exception as e:
+        print("Erro em scrap_comments_html:", e)
+        return ""
 
