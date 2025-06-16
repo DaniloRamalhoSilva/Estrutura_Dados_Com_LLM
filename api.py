@@ -1,10 +1,20 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from mercadolivre import scrap_product, scrap_comments_html, _validate_mercadolivre_url
 from structuring_llm import extract_structured
 
 app = FastAPI()
+
+# libera requisições do front-end
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def create_driver():
