@@ -28,5 +28,5 @@ GET /scrape?url=https://produto.mercadolivre.com.br/...
 
 1. O endpoint cria um driver Selenium em modo headless.
 2. O driver navega até a URL informada e coleta os principais elementos da página.
-3. O HTML obtido é enviado para o modelo de linguagem, que devolve os dados estruturados.
-4. A resposta da API é um JSON com essas informações.
+3. O HTML obtido é combinado com os cinco primeiros comentários do anúncio e enviado para o modelo de linguagem.
+4. O modelo retorna um JSON que inclui `percentagem` e `justificativa` sobre a originalidade do produto.
