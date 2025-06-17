@@ -23,11 +23,11 @@ Você recebe o HTML bruto de uma página de anúncio de cartucho HP. Retorne um 
 - valor_revisao: inteiro 
 - vendedor: nome da loja ou responsavel pela venda
 - quantidade_reviews: inteiro
-    - quantidade_fotos: inteiro
-    - classificacao_confianca: procure elementos que possam identificar se o produto é (ex: \"Original\", \"Pirata\", \"Suspeito\")
-    - percentagem: porcentagem de confiança de o produto ser original
-    - justificativa: texto curto descrevendo os critérios usados para a classificação
-    Responda **somente** com um JSON válido.
+- quantidade_fotos: inteiro
+- classificacao_confianca: procure elementos que possam identificar se o produto é (ex: \"Original\", \"Pirata\", \"Suspeito\")
+- percentagem: porcentagem de confiança de o produto ser original
+- justificativa: texto curto descrevendo os critérios usados para a classificação
+Responda **somente** com um JSON válido.
 """
 
 def extract_structured(html: str) -> dict:
